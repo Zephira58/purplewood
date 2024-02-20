@@ -64,6 +64,13 @@ impl EventHandler for Handler {
 async fn main() {
     dotenv().ok();
 
+    println!("Hello and welcome to purplewood, this is a small discord bot I, Zephira made to help my friends out");
+    println!("And to also learn the serenity framework within rust! ♥");
+    println!("Feel free to run the credits command to find out more if your interested");
+    for x in 0..19 {
+        print!("-")
+    }
+
     // Configure the client with your Discord bot token in the environment.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
