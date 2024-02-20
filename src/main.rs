@@ -1,53 +1,83 @@
-use dotenv::dotenv;
+//Template nicked from https://github.com/serenity-rs/serenity/tree/current/examples/e14_slash_commands
+
+mod commands;
+
 use std::env;
 
+use dotenv::dotenv;
 use serenity::async_trait;
-use serenity::framework::standard::macros::{command, group};
-use serenity::framework::standard::{CommandResult, Configuration, StandardFramework};
-use serenity::model::channel::Message;
+use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
+use serenity::model::application::{Command, Interaction};
+use serenity::model::gateway::Ready;
+use serenity::model::id::GuildId;
 use serenity::prelude::*;
-
-#[group]
-#[commands(ping, whoisdemo)]
-struct General;
 
 struct Handler;
 
 #[async_trait]
-impl EventHandler for Handler {}
+impl EventHandler for Handler {
+    async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
+        if let Interaction::Command(command) = interaction {
+            println!("Received command interaction: {command:#?}");
+
+            let content = match command.data.name.as_str() {
+                "recruit" => {
+                    commands::recruit::run(&ctx, &command).await.unwrap();
+                    None
+                }
+                "credits" => Some(commands::credits::run(&command.data.options())),
+                _ => Some("not implemented :(".to_string()),
+            };
+
+            if let Some(content) = content {
+                let data = CreateInteractionResponseMessage::new().content(content);
+                let builder = CreateInteractionResponse::Message(data);
+                if let Err(why) = command.create_response(&ctx.http, builder).await {
+                    println!("Cannot respond to slash command: {why}");
+                }
+            }
+        }
+    }
+
+    async fn ready(&self, ctx: Context, ready: Ready) {
+        println!("{} is connected!", ready.user.name);
+
+        let guild_id = GuildId::new(
+            env::var("GUILD_ID")
+                .expect("Expected GUILD_ID in environment")
+                .parse()
+                .expect("GUILD_ID must be an integer"),
+        );
+
+        let commands = guild_id
+            .set_commands(
+                &ctx.http,
+                vec![commands::credits::register(), commands::recruit::register()],
+            )
+            .await;
+
+        println!("I now have the following guild slash commands: {commands:#?}");
+    }
+}
 
 #[tokio::main]
 async fn main() {
     dotenv().ok();
 
-    let framework = StandardFramework::new().group(&GENERAL_GROUP);
-    framework.configure(Configuration::new().prefix(".")); // set the bot's prefix to "~"
+    // Configure the client with your Discord bot token in the environment.
+    let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
 
-    // Login with a bot token from the environment
-    let token = env::var("DISCORD_TOKEN").expect("token");
-    let intents = GatewayIntents::non_privileged() | GatewayIntents::MESSAGE_CONTENT;
-    let mut client = Client::builder(token, intents)
+    // Build our client.
+    let mut client = Client::builder(token, GatewayIntents::empty())
         .event_handler(Handler)
-        .framework(framework)
         .await
         .expect("Error creating client");
 
-    // start listening for events by starting a single shard
+    // Finally, start a single shard, and start listening to events.
+    //
+    // Shards will automatically attempt to reconnect, and will perform exponential backoff until
+    // it reconnects.
     if let Err(why) = client.start().await {
-        println!("An error occurred while running the client: {:?}", why);
+        println!("Client error: {why:?}");
     }
-}
-
-#[command]
-async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "Pong!").await?;
-
-    Ok(())
-}
-
-#[command]
-async fn whoisdemo(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "**Recruited:** Orangefin (STEAM_0:1:238532748)\n**Recruiter:** 𝖲𝖺𝗈𝗂𝗋𝗌𝖾\n**Date Recruited:** 24/02/20\n**In discord:** True\n**Trained:** True").await?;
-
-    Ok(())
 }
