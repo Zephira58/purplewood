@@ -1,0 +1,24 @@
+[package]
+name = "purplewood"
+version = "0.0.1"
+authors = ["zephira <zephira@protonmail.com>"]
+edition = "2021"
+license = "GNU General Public License v3.0"
+repository = "https://github.com/Zephira58/purplewood/blob/main/LICENSE"
+readme = "README.md"
+description = "A discord bot built with the serentiy framework on rust. To be used within a gaming community i'm a member of for ease of use."
+publish = false
+
+[dependencies]
+serenity = "0.12.0"
+tokio = { version = "1.36.0", features = ["macros", "rt-multi-thread"] }
+sqlite = "0.33.0"
+dotenv = "0.15.0"
+
+
+[profile.release]
+# See info here https://www.youtube.com/watch?v=b2qe3L4BX-Y
+strip = true
+opt-level = "s"
+lto = true
+codegen-units = 1
