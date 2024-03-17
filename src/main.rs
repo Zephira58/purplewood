@@ -94,4 +94,20 @@ async fn main() {
     if let Err(why) = client.start().await {
         println!("Client error: {why:?}");
     }
+    let _ = update();
+}
+
+use self_update::cargo_crate_version;
+
+fn update() -> Result<(), Box<dyn (::std::error::Error)>> {
+    let status = self_update::backends::github::Update::configure()
+        .repo_owner("Zephira58")
+        .repo_name("purplewood")
+        .bin_name("github")
+        .show_download_progress(true)
+        .current_version(cargo_crate_version!())
+        .build()?
+        .update()?;
+    println!("Update status: `{}`!", status.version());
+    Ok(())
 }
