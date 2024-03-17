@@ -10,8 +10,8 @@ pub fn run() -> String {
     let player: i32 = rand::thread_rng().gen_range(0..100);
 
     if cpu > player {
-        return format!("You lost with value: {:?} vs {:?}", player, cpu);
+        format!("You lost with value: {:?} vs {:?}", player, cpu)
     } else {
-        return format!("You won with value: {:?} vs {:?}", player, cpu);
+        format!("You won with value: {:?} vs {:?}", player, cpu)
     }
 }

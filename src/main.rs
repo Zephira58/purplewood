@@ -7,7 +7,7 @@ use std::env;
 use dotenv::dotenv;
 use serenity::async_trait;
 use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
-use serenity::model::application::{Command, Interaction};
+use serenity::model::application::Interaction;
 use serenity::model::gateway::Ready;
 use serenity::model::id::GuildId;
 use serenity::prelude::*;
@@ -21,6 +21,7 @@ impl EventHandler for Handler {
             println!("Received command interaction: {command:#?}");
 
             let content = match command.data.name.as_str() {
+                "rockpaper" => Some(commands::rockpaper::run(&command.data.options())),
                 "recruit" => {
                     commands::recruit::run(&ctx, &command).await.unwrap();
                     None
@@ -41,7 +42,7 @@ impl EventHandler for Handler {
     }
 
     async fn ready(&self, ctx: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
+        println!("\n{} is connected!", ready.user.name);
 
         let guild_id = GuildId::new(
             env::var("GUILD_ID")
@@ -57,6 +58,7 @@ impl EventHandler for Handler {
                     commands::credits::register(),
                     commands::recruit::register(),
                     commands::highroll::register(),
+                    commands::rockpaper::register(),
                 ],
             )
             .await;
@@ -72,7 +74,7 @@ async fn main() {
     println!("Hello and welcome to purplewood, this is a small discord bot I, Zephira made to help my friends out");
     println!("And to also learn the serenity framework within rust! ♥");
     println!("Feel free to run the credits command to find out more if your interested");
-    for x in 0..19 {
+    for _x in 0..80 {
         print!("-")
     }
 
