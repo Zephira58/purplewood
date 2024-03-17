@@ -26,6 +26,7 @@ impl EventHandler for Handler {
                     None
                 }
                 "credits" => Some(commands::credits::run(&command.data.options())),
+                "highroll" => Some(commands::highroll::run()),
                 _ => Some("not implemented :(".to_string()),
             };
 
@@ -52,7 +53,7 @@ impl EventHandler for Handler {
         let commands = guild_id
             .set_commands(
                 &ctx.http,
-                vec![commands::credits::register(), commands::recruit::register()],
+                vec![commands::credits::register(), commands::recruit::register(), commands::highroll::register()],
             )
             .await;
 
