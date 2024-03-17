@@ -3,7 +3,6 @@ use serenity::builder::CreateCommand;
 
 pub fn register() -> CreateCommand {
     CreateCommand::new("highroll").description("Highroll the discord bot and see who wins")
-
 }
 
 pub fn run() -> String {

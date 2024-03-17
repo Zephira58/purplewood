@@ -53,7 +53,11 @@ impl EventHandler for Handler {
         let commands = guild_id
             .set_commands(
                 &ctx.http,
-                vec![commands::credits::register(), commands::recruit::register(), commands::highroll::register()],
+                vec![
+                    commands::credits::register(),
+                    commands::recruit::register(),
+                    commands::highroll::register(),
+                ],
             )
             .await;
 

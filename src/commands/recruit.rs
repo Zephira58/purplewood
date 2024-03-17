@@ -17,7 +17,7 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
         .timeout(std::time::Duration::from_secs(600))
         .short_field("Recruit Name")
         .short_field("Your Discord name")
-        .short_field("SteamID")
+        .short_field("Recruit SteamID")
         .short_field("Are they in the discord?")
         .short_field("Have they been trained?");
     let response = interaction.quick_modal(ctx, modal).await?.unwrap();
