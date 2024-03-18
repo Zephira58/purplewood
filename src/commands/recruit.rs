@@ -2,9 +2,9 @@ use serenity::builder::*;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 use serenity::utils::CreateQuickModal;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::{fmt::format, time::{SystemTime, UNIX_EPOCH}};
 
-pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), serenity::Error> {
+pub async fn run(ctx: &Context, interaction: &CommandInteraction, recruiterid: i64) -> Result<(), serenity::Error> {
     // Get the current time as a Duration since the Unix epoch
     let duration = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -16,22 +16,21 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
     let modal = CreateQuickModal::new("Who did we recruit?")
         .timeout(std::time::Duration::from_secs(600))
         .short_field("Recruit Name")
-        .short_field("Your Discord name")
         .short_field("Recruit SteamID")
         .short_field("Are they in the discord?")
         .short_field("Have they been trained?");
     let response = interaction.quick_modal(ctx, modal).await?.unwrap();
 
     let inputs = response.inputs;
-    let (recruit_name, recruiter_name, recruit_steamid, in_discord, is_trained) =
-        (&inputs[0], &inputs[1], &inputs[2], &inputs[3], &inputs[4]);
+    let (recruit_name, recruit_steamid, in_discord, is_trained) =
+        (&inputs[0], &inputs[1], &inputs[2], &inputs[3]);
 
     response
         .interaction
         .create_response(
             ctx,
             CreateInteractionResponse::Message(CreateInteractionResponseMessage::new().content(
-                format!("**Recruited:** {recruit_name} ({recruit_steamid})\n**Recruiter:** {recruiter_name}\n**Date Recruited:** <t:{:?}>\n**In Discord**: {in_discord}\n**Is Trained:** {is_trained}", unix_time),
+                format!("**Recruited:** {recruit_name} ({recruit_steamid})\n**Recruiter:** {}\n**Date Recruited:** <t:{:?}>\n**In Discord**: {in_discord}\n**Is Trained:** {is_trained}", discord_id_wrapper(recruiterid), unix_time,),
             )),
         )
         .await?;
@@ -40,6 +39,10 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction) -> Result<(), 
 
 pub fn register() -> CreateCommand {
     CreateCommand::new("recruit").description("Use this to register a new recruit")
+}
+
+fn discord_id_wrapper(id: i64) -> String{
+    format!("<@{:?}>", id)
 }
 
 //"**Recruited:** Orangefin (STEAM_0:1:238532748)\n**Recruiter:** 𝖲𝖺𝗈𝗂𝗋𝗌𝖾\n**Date Recruited:** 24/02/20\n**In discord:** True\n**Trained:** True"
