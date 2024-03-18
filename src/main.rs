@@ -49,7 +49,7 @@ impl EventHandler for Handler {
                 "recruit" => {
                     commands::recruit::run(&ctx, &command, x).await.unwrap();
                     None
-                }   
+                }
                 "credits" => Some(commands::credits::run()),
                 "highroll" => Some(commands::highroll::run(0, 0)),
                 _ => Some("not implemented :(".to_string()),

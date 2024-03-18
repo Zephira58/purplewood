@@ -17,7 +17,6 @@ pub fn register() -> CreateCommand {
         )
 }
 
-
 pub fn run(player: i32, cpu: Option<i32>) -> String {
     let choices = ["rock", "paper", "scissors"];
     let player_choice = choices[player as usize % 3];
@@ -31,10 +30,16 @@ pub fn run(player: i32, cpu: Option<i32>) -> String {
 
     match (player_choice, cpu_choice) {
         ("rock", "scissors") | ("paper", "rock") | ("scissors", "paper") => {
-            format!("You won with {} against (CPU chose {})", player_choice, cpu_choice)
+            format!(
+                "You won with {} against (CPU chose {})",
+                player_choice, cpu_choice
+            )
         }
         ("rock", "paper") | ("paper", "scissors") | ("scissors", "rock") => {
-            format!("You lost with {} against (CPU chose {})", player_choice, cpu_choice)
+            format!(
+                "You lost with {} against (CPU chose {})",
+                player_choice, cpu_choice
+            )
         }
         _ => {
             format!("You got a tie, You both chose {}", player_choice)

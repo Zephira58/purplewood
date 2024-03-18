@@ -65,4 +65,3 @@ fn rockpaper_test_tie() {
     let result = rockpaper::run(0, Some(0));
     assert_eq!(result, "You got a tie, You both chose rock")
 }
-
