@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["EntitlementKind","EntitlementOwner","SkuKind"],"struct":["Entitlement","Sku","SkuFlags"]};
