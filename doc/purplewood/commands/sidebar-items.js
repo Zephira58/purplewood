@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["credits","highroll","recruit","rockpaper"]};
