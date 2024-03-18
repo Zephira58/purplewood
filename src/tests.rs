@@ -6,6 +6,7 @@ use crate::commands;
 use crate::commands::credits;
 use crate::commands::highroll;
 use crate::commands::recruit::discord_id_wrapper;
+use crate::commands::rockpaper;
 use crate::env_file_maker;
 
 #[test]
@@ -46,19 +47,22 @@ fn recruit_test() {
 }*/
 
 // I'll leave thease to you as you wrote the rps code @MerMer
-/*
+
 #[test]
 fn rockpaper_test_win() {
-    todo!()
+    let result = rockpaper::run(0, Some(2));
+    assert_eq!(result, "You won with rock against (CPU chose scissors)")
 }
 
 #[test]
 fn rockpaper_test_lose() {
-    todo!()
+    let result = rockpaper::run(0, Some(1));
+    assert_eq!(result, "You lost with rock against (CPU chose paper)")
 }
 
 #[test]
 fn rockpaper_test_tie() {
-    todo!()
+    let result = rockpaper::run(0, Some(0));
+    assert_eq!(result, "You got a tie, You both chose rock")
 }
-*/
+
