@@ -1,5 +1,3 @@
-// Stolen from https://github.com/MercuryMer/fartcentral/blob/rust/src/commands/rock.rs to test
-
 use rand::Rng;
 use serenity::builder::{CreateCommand, CreateCommandOption};
 use serenity::model::application::CommandOptionType;

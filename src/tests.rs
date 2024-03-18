@@ -46,8 +46,6 @@ fn recruit_test() {
     todo!()
 }*/
 
-// I'll leave thease to you as you wrote the rps code @MerMer
-
 #[test]
 fn rockpaper_test_win() {
     let result = rockpaper::run(0, Some(2));
