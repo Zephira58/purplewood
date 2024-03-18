@@ -45,11 +45,11 @@ impl EventHandler for Handler {
             let recruiterid = &command.member.clone().unwrap().user.id.to_string();
             let x = recruiterid.parse::<i64>().unwrap();
             let content = match command.data.name.as_str() {
-                "rockpaper" => Some(commands::rockpaper::run(&command.data.options())),
+                "rockpaper" => Some(commands::rockpaper::run(0, None)),
                 "recruit" => {
                     commands::recruit::run(&ctx, &command, x).await.unwrap();
                     None
-                }
+                }   
                 "credits" => Some(commands::credits::run()),
                 "highroll" => Some(commands::highroll::run(0, 0)),
                 _ => Some("not implemented :(".to_string()),
