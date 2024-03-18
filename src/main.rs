@@ -148,7 +148,7 @@ fn env_file_maker() -> std::io::Result<()> {
         Err(_) => {
             yellow!("Data directory couldnt be found, creating....\n");
             fs::create_dir_all("./data")?;
-            File::create("./data/purplewood-sqlite.db").unwrap();
+            File::create("./data/purplewood-data.db").unwrap();
             let mut file = File::create("./data/.env")?;
             file.write_all(b"# Please add your discord bot token and guildID here\n# -Zephira\nDISCORD_TOKEN = ''\nGUILD_ID = ''")?;
 
