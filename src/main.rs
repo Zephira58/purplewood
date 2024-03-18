@@ -1,6 +1,7 @@
 //Template nicked from https://github.com/serenity-rs/serenity/tree/current/examples/e14_slash_commands
 
 mod commands;
+pub mod tests;
 
 use std::env;
 
@@ -26,8 +27,8 @@ impl EventHandler for Handler {
                     commands::recruit::run(&ctx, &command).await.unwrap();
                     None
                 }
-                "credits" => Some(commands::credits::run(&command.data.options())),
-                "highroll" => Some(commands::highroll::run()),
+                "credits" => Some(commands::credits::run()),
+                "highroll" => Some(commands::highroll::run(0, 0)),
                 _ => Some("not implemented :(".to_string()),
             };
 
