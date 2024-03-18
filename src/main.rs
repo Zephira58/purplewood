@@ -3,8 +3,10 @@
 mod commands;
 pub mod tests;
 
+use colour::*;
 use std::fs::File;
 use std::io::Write;
+use std::time::{SystemTime, UNIX_EPOCH};
 use std::{env, fs, process};
 
 use dotenv::dotenv;
@@ -21,8 +23,23 @@ struct Handler;
 impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::Command(command) = interaction {
-            println!("Received command interaction: {command:#?}");
+            //Returns the full json body
+            //println!("Received command interaction: {command:#?}");
 
+            // Get the current time as a Duration since the Unix epoch
+            let duration = SystemTime::now()
+                .duration_since(UNIX_EPOCH)
+                .expect("Time went backwards!");
+
+            // Convert the Duration to Unix time (seconds since the Unix epoch)
+            let unix_time = duration.as_secs();
+            green!("\n\nNew command executed:\n");
+            prnt!(
+                "    User: {:?}\n    Command: {:?}\n    Unix Timestamp: {:?}",
+                &command.member.clone().unwrap().user.name.as_str(),
+                &command.data.name.as_str(),
+                unix_time
+            );
             let content = match command.data.name.as_str() {
                 "rockpaper" => Some(commands::rockpaper::run(&command.data.options())),
                 "recruit" => {
@@ -45,7 +62,7 @@ impl EventHandler for Handler {
     }
 
     async fn ready(&self, ctx: Context, ready: Ready) {
-        println!("\n{} is connected!", ready.user.name);
+        green!("\n{} is connected!\n", ready.user.name);
 
         let guild_id = GuildId::new(
             env::var("GUILD_ID")
@@ -54,7 +71,7 @@ impl EventHandler for Handler {
                 .expect("GUILD_ID must be an integer"),
         );
 
-        let commands = guild_id
+        let _commands = guild_id
             .set_commands(
                 &ctx.http,
                 vec![
@@ -66,7 +83,9 @@ impl EventHandler for Handler {
             )
             .await;
 
-        println!("I now have the following guild slash commands: {commands:#?}");
+        print!("I now have the following commands: ");
+        magenta!("credits, recruit, highroll, rockpaper");
+        prnt!("");
     }
 }
 
@@ -78,14 +97,15 @@ async fn main() {
 
     println!("Hello and welcome to purplewood, this is a small discord bot I, Zephira made to help my friends out");
     println!("And to also learn the serenity framework within rust! ♥");
-    println!("Feel free to run the credits command to find out more if your interested");
+    print!("Feel free to run the ");
+    magenta!("credits");
+    prnt!(" command to find out more if your interested\n");
     for _x in 0..100 {
         print!("-")
     }
 
     // Configure the client with your Discord bot token in the environment.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
-
     // Build our client.
     let mut client = Client::builder(token, GatewayIntents::empty())
         .event_handler(Handler)
@@ -122,14 +142,17 @@ fn env_file_maker() -> std::io::Result<()> {
 
     match x {
         Ok(_) => {
-            println!("Directory exists");
+            yellow!("Data directory found, reading data...\n");
+            prnt!("");
         }
         Err(_) => {
+            yellow!("Data directory couldnt be found, creating....\n");
             fs::create_dir_all("./data")?;
+            File::create("./data/purplewood-sqlite.db").unwrap();
             let mut file = File::create("./data/.env")?;
             file.write_all(b"# Please add your discord bot token and guildID here\n# -Zephira\nDISCORD_TOKEN = ''\nGUILD_ID = ''")?;
 
-            println!("Your .env file didn't exist, we made one for you but to use the bot you'll have to populate the data yourself manually. It should be located at: ./data/.env");
+            red!("Your .env file didn't exist, we made one for you but to use the bot you'll have to populate the data yourself manually. It should be located at: ./data/.env");
             process::exit(0);
         }
     }
