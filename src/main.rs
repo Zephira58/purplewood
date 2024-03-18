@@ -3,7 +3,9 @@
 mod commands;
 pub mod tests;
 
-use std::env;
+use std::fs::File;
+use std::io::Write;
+use std::{env, fs, process};
 
 use dotenv::dotenv;
 use serenity::async_trait;
@@ -70,12 +72,14 @@ impl EventHandler for Handler {
 
 #[tokio::main]
 async fn main() {
+    let _ = env_file_maker();
+    dotenv::from_path("./data/.env").unwrap();
     dotenv().ok();
 
     println!("Hello and welcome to purplewood, this is a small discord bot I, Zephira made to help my friends out");
     println!("And to also learn the serenity framework within rust! ♥");
     println!("Feel free to run the credits command to find out more if your interested");
-    for _x in 0..80 {
+    for _x in 0..100 {
         print!("-")
     }
 
@@ -110,5 +114,25 @@ fn update() -> Result<(), Box<dyn (::std::error::Error)>> {
         .build()?
         .update()?;
     println!("Update status: `{}`!", status.version());
+    Ok(())
+}
+
+fn env_file_maker() -> std::io::Result<()> {
+    let x = fs::read_dir("./data");
+
+    match x {
+        Ok(_) => {
+            println!("Directory exists");
+        }
+        Err(_) => {
+            fs::create_dir_all("./data")?;
+            let mut file = File::create("./data/.env")?;
+            file.write_all(b"# Please add your discord bot token and guildID here\n# -Zephira\nDISCORD_TOKEN = ''\nGUILD_ID = ''")?;
+
+            println!("Your .env file didn't exist, we made one for you but to use the bot you'll have to populate the data yourself manually. It should be located at: ./data/.env");
+            process::exit(0);
+        }
+    }
+
     Ok(())
 }

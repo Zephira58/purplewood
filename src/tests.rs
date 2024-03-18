@@ -5,6 +5,7 @@ use self_update::cargo_crate_version;
 use crate::commands;
 use crate::commands::credits;
 use crate::commands::highroll;
+use crate::env_file_maker;
 
 #[test]
 fn highroll_test_win() {
@@ -32,6 +33,10 @@ fn credits_test() {
 }
 
 //Todo: Figure out how tf to make the recruit.rs module testable
+/*#[test]
+fn recruit_test() {
+    todo!()
+}*/
 
 // I'll leave thease to you as you wrote the rps code @MerMer
 /*
