@@ -4,7 +4,7 @@ mod commands;
 pub mod tests;
 
 use colour::*;
-use std::arch::x86_64;
+
 use std::fs::File;
 use std::io::Write;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -42,7 +42,7 @@ impl EventHandler for Handler {
                 unix_time
             );
 
-            let mut recruiterid = &command.member.clone().unwrap().user.id.to_string();
+            let recruiterid = &command.member.clone().unwrap().user.id.to_string();
             let x = recruiterid.parse::<i64>().unwrap();
             let content = match command.data.name.as_str() {
                 "rockpaper" => Some(commands::rockpaper::run(&command.data.options())),

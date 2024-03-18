@@ -2,9 +2,13 @@ use serenity::builder::*;
 use serenity::model::prelude::*;
 use serenity::prelude::*;
 use serenity::utils::CreateQuickModal;
-use std::{fmt::format, time::{SystemTime, UNIX_EPOCH}};
+use std::time::{SystemTime, UNIX_EPOCH};
 
-pub async fn run(ctx: &Context, interaction: &CommandInteraction, recruiter_id: i64) -> Result<(), serenity::Error> {
+pub async fn run(
+    ctx: &Context,
+    interaction: &CommandInteraction,
+    recruiter_id: i64,
+) -> Result<(), serenity::Error> {
     // Get the current time as a Duration since the Unix epoch
     let duration = SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -21,8 +25,7 @@ pub async fn run(ctx: &Context, interaction: &CommandInteraction, recruiter_id: 
     let response = interaction.quick_modal(ctx, modal).await?.unwrap();
 
     let inputs = response.inputs;
-    let (recruit_id, recruit_steamid, is_trained) =
-        (&inputs[0], &inputs[1], &inputs[2]);
+    let (recruit_id, recruit_steamid, is_trained) = (&inputs[0], &inputs[1], &inputs[2]);
 
     response
         .interaction
@@ -40,7 +43,7 @@ pub fn register() -> CreateCommand {
     CreateCommand::new("recruit").description("Use this to register a new recruit")
 }
 
-fn discord_id_wrapper(id: String) -> String{    
+fn discord_id_wrapper(id: String) -> String {
     format!("<@{}>", id)
 }
 
