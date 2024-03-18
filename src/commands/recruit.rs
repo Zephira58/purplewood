@@ -43,7 +43,7 @@ pub fn register() -> CreateCommand {
     CreateCommand::new("recruit").description("Use this to register a new recruit")
 }
 
-fn discord_id_wrapper(id: String) -> String {
+pub fn discord_id_wrapper(id: String) -> String {
     format!("<@{}>", id)
 }
 
