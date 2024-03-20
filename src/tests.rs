@@ -1,5 +1,4 @@
-#![allow(unused_imports)]
-
+#[cfg(test)]
 use self_update::cargo_crate_version;
 
 use crate::commands;
