@@ -1,7 +1,7 @@
 [package]
 name = "purplewood"
-version = "0.1.4"
-authors = ["zephira <zephira@protonmail.com>"]
+version = "0.1.5"
+authors = ["zephira <business@zephira.uk>"]
 edition = "2021"
 license = "GNU General Public License v3.0"
 repository = "https://github.com/Zephira58/purplewood"
@@ -16,4 +16,3 @@ dotenv = "0.15.0"
 rand = "0.8.5"
 self_update = "0.40.0"
 colour = "1.1.0"
-chrono = "0.4.38"
