@@ -48,6 +48,7 @@ pub fn run(options: &[ResolvedOption]) -> String {
 }
 
 pub fn register() -> CreateCommand {
+    colour::magenta!(" rockpaper,");
     CreateCommand::new("rockpaper")
         .description("Play rock paper scissors with purplewood!")
         .add_option(

@@ -6,5 +6,6 @@ pub fn run() -> String {
 }
 
 pub fn register() -> CreateCommand {
+    colour::magenta!(" credits,");
     CreateCommand::new("credits").description("Who made the bot and what is it about?")
 }
