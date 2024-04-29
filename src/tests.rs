@@ -6,7 +6,7 @@ fn highroll() {
     let win = crate::commands::highroll::run(50, 32);
     let lose = crate::commands::highroll::run(50, 93);
     let tie = crate::commands::highroll::run(50, 50);
-    
+
     assert_eq!(win, "You won with value: 50 vs 32");
     assert_eq!(lose, "You lost with value: 50 vs 93");
     assert_eq!(tie, "You tied with value: 50 vs 50");
