@@ -2,6 +2,7 @@ use rand::{self, Rng};
 use serenity::builder::CreateCommand;
 
 pub fn register() -> CreateCommand {
+    colour::magenta!(" highroll,");
     CreateCommand::new("highroll").description("Highroll the discord bot and see who wins")
 }
 

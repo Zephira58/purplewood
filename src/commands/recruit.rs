@@ -40,6 +40,7 @@ pub async fn run(
 }
 
 pub fn register() -> CreateCommand {
+    colour::magenta!(" recruit,");
     CreateCommand::new("recruit").description("Use this to register a new recruit")
 }
 

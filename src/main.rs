@@ -52,6 +52,7 @@ impl EventHandler for Handler {
                 }
                 "credits" => Some(commands::credits::run()),
                 "highroll" => Some(commands::highroll::run(0, 0)),
+                "id" => Some(commands::id::run(&command.data.options())),
                 _ => Some("not implemented :(".to_string()),
             };
 
@@ -75,6 +76,8 @@ impl EventHandler for Handler {
                 .expect("GUILD_ID must be an integer"),
         );
 
+        print!("I now have the following commands:");
+        //magenta!("credits, recruit, highroll, rockpaper, id");
         let _commands = guild_id
             .set_commands(
                 &ctx.http,
@@ -83,13 +86,11 @@ impl EventHandler for Handler {
                     commands::recruit::register(),
                     commands::highroll::register(),
                     commands::rockpaper::register(),
+                    commands::id::register(),
                 ],
             )
             .await;
-
-        print!("I now have the following commands: ");
-        magenta!("credits, recruit, highroll, rockpaper");
-        prnt!("");
+        prnt!("\n");
     }
 }
 
