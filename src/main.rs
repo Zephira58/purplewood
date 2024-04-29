@@ -151,7 +151,7 @@ fn env_file_maker() -> std::io::Result<()> {
             prnt!("");
         }
         Err(_) => {
-            yellow!("Data directory couldnt be found, creating....\n");
+            yellow!("Data directory couldn't be found, creating....\n");
             fs::create_dir_all("./data")?;
             File::create("./data/purplewood-data.db").unwrap();
             let mut file = File::create("./data/.env")?;
