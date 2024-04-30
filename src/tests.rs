@@ -1,6 +1,3 @@
-#[cfg(test)]
-use self_update::cargo_crate_version;
-
 #[test]
 fn highroll() {
     let win = crate::commands::highroll::run(50, 32);

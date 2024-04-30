@@ -33,9 +33,11 @@ pub async fn run(
             .interaction
             .create_response(
                 ctx,
-                CreateInteractionResponse::Message(CreateInteractionResponseMessage::new().content(
-                    "The recruits Discord ID must be an integer (a number)",
-                ).flags(InteractionResponseFlags::EPHEMERAL)),
+                CreateInteractionResponse::Message(
+                    CreateInteractionResponseMessage::new()
+                        .content("The recruits Discord ID must be an integer (a number)")
+                        .flags(InteractionResponseFlags::EPHEMERAL),
+                ),
             )
             .await?;
         return Ok(());

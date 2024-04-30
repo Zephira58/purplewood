@@ -4,7 +4,9 @@ mod commands;
 pub mod tests;
 
 use colour::*;
+use serde_yaml::Value;
 
+use std::collections::BTreeMap;
 use std::fs::File;
 use std::io::Write;
 use std::time::{SystemTime, UNIX_EPOCH};
@@ -24,9 +26,6 @@ struct Handler;
 impl EventHandler for Handler {
     async fn interaction_create(&self, ctx: Context, interaction: Interaction) {
         if let Interaction::Command(command) = interaction {
-            //Returns the full json body
-            //println!("Received command interaction: {command:#?}");
-
             // Get the current time as a Duration since the Unix epoch
             let duration = SystemTime::now()
                 .duration_since(UNIX_EPOCH)
@@ -34,13 +33,19 @@ impl EventHandler for Handler {
 
             // Convert the Duration to Unix time (seconds since the Unix epoch)
             let unix_time = duration.as_secs();
-            green!("\n\nNew command executed:\n");
-            prnt!(
-                "    User: {:?}\n    Command: {:?}\n    Unix Timestamp: {:?}",
-                &command.member.clone().unwrap().user.name.as_str(),
-                &command.data.name.as_str(),
-                unix_time
+
+            let mut command_info = BTreeMap::new();
+            command_info.insert(
+                "User",
+                Value::String(command.member.clone().unwrap().user.name.clone()),
             );
+            command_info.insert("Command", Value::String(command.data.name.clone()));
+            command_info.insert("Unix Timestamp", Value::String(unix_time.to_string()));
+
+            let yaml = serde_yaml::to_string(&command_info).unwrap();
+
+            green!("\n\nNew command executed:\n");
+            prnt!("{}\n", yaml);
 
             let recruiterid = &command.member.clone().unwrap().user.id.to_string();
             let x = recruiterid.parse::<i64>().unwrap();
@@ -77,7 +82,6 @@ impl EventHandler for Handler {
         );
 
         print!("I now have the following commands:");
-        //magenta!("credits, recruit, highroll, rockpaper, id");
         let _commands = guild_id
             .set_commands(
                 &ctx.http,
