@@ -1,26 +1,24 @@
-//Template nicked from https://github.com/serenity-rs/serenity/tree/current/examples/e14_slash_commands
-
 mod commands;
 pub mod tests;
 
 use colour::*;
 use serde_yaml::Value;
-
-use std::collections::BTreeMap;
-use std::fs::File;
-use std::io::Write;
-use std::time::{SystemTime, UNIX_EPOCH};
-use std::{env, fs, process};
-
+use std::{
+    collections::BTreeMap,
+    fs::{self, File},
+    io::Write,
+    time::{SystemTime, UNIX_EPOCH},
+    env, process,
+};
 use dotenv::dotenv;
-use serenity::async_trait;
-use serenity::builder::{CreateInteractionResponse, CreateInteractionResponseMessage};
-use serenity::model::application::Interaction;
-use serenity::model::gateway::Ready;
-use serenity::model::id::GuildId;
-use serenity::prelude::*;
+use serenity::{
+    async_trait, builder::{CreateInteractionResponse, CreateInteractionResponseMessage},
+    model::{application::Interaction, gateway::Ready, id::GuildId},
+    prelude::*,
+};
 
 struct Handler;
+
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -44,9 +42,13 @@ impl EventHandler for Handler {
 
             let yaml = serde_yaml::to_string(&command_info).unwrap();
 
-            green!("\n\nNew command executed:\n");
-            prnt!("{}\n", yaml);
-
+            green_ln!("New command executed:");
+            if check_debug() {
+                println!("Received command interaction: {command:#?}");
+            } else {
+                prnt!("{}\n", yaml);
+            }
+            
             let recruiterid = &command.member.clone().unwrap().user.id.to_string();
             let x = recruiterid.parse::<i64>().unwrap();
             let content = match command.data.name.as_str() {
@@ -114,7 +116,9 @@ async fn main() {
     for _x in 0..100 {
         print!("-")
     }
-
+    if check_debug() {
+        yellow!("\nDebug mode enabled!")
+    }
     // Configure the client with your Discord bot token in the environment.
     let token = env::var("DISCORD_TOKEN").expect("Expected a token in the environment");
     // Build our client.
@@ -130,22 +134,6 @@ async fn main() {
     if let Err(why) = client.start().await {
         println!("Client error: {why:?}");
     }
-    let _ = update();
-}
-
-use self_update::cargo_crate_version;
-
-fn update() -> Result<(), Box<dyn (::std::error::Error)>> {
-    let status = self_update::backends::github::Update::configure()
-        .repo_owner("Zephira58")
-        .repo_name("purplewood")
-        .bin_name("github")
-        .show_download_progress(true)
-        .current_version(cargo_crate_version!())
-        .build()?
-        .update()?;
-    println!("Update status: `{}`!", status.version());
-    Ok(())
 }
 
 fn env_file_maker() -> std::io::Result<()> {
@@ -153,15 +141,17 @@ fn env_file_maker() -> std::io::Result<()> {
 
     match x {
         Ok(_) => {
-            yellow!("Data directory found, reading data...\n");
-            prnt!("");
+            if check_debug() {
+                yellow!("Data directory found, reading data...\n");
+                prnt!("");
+            }
         }
         Err(_) => {
-            yellow!("Data directory couldn't be found, creating....\n");
+            red!("Data directory couldn't be found, creating....\n");
             fs::create_dir_all("./data")?;
             File::create("./data/purplewood-data.db").unwrap();
             let mut file = File::create("./data/.env")?;
-            file.write_all(b"# Please add your discord bot token and guildID here\n# -Zephira\nDISCORD_TOKEN = ''\nGUILD_ID = ''")?;
+            file.write_all(b"# Please add your discord bot token and guildID here\n# -Zephira\nDISCORD_TOKEN = ''\nGUILD_ID = ''\nDEBUG = 'false'")?;
 
             red!("Your .env file didn't exist, we made one for you but to use the bot you'll have to populate the data yourself manually. It should be located at: ./data/.env");
             process::exit(0);
@@ -169,4 +159,26 @@ fn env_file_maker() -> std::io::Result<()> {
     }
 
     Ok(())
+}
+
+fn check_debug() -> bool {
+    // Load the environment variables from the .env file
+    dotenv::from_path("./data/.env").unwrap();
+    dotenv().ok();
+
+    // Get the DEBUG variable's value
+    match env::var("DEBUG") {
+        Ok(val) => {
+            // Check if the value is "true"
+            if val.to_lowercase() == "true" {
+                true
+            } else {
+                false
+            }
+        },
+        Err(_) => {
+            // If the DEBUG variable does not exist, return false
+            false
+        }
+    }
 }
