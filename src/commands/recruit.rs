@@ -27,6 +27,20 @@ pub async fn run(
     let inputs = response.inputs;
     let (recruit_id, recruit_steamid, is_trained) = (&inputs[0], &inputs[1], &inputs[2]);
 
+    // Check if the recruit_id is a valid integer
+    if recruit_id.parse::<i64>().is_err() {
+        response
+            .interaction
+            .create_response(
+                ctx,
+                CreateInteractionResponse::Message(CreateInteractionResponseMessage::new().content(
+                    "Recruit Discord ID must be an integer (a number)",
+                )),
+            )
+            .await?;
+        return Ok(());
+    }
+
     response
         .interaction
         .create_response(
@@ -47,6 +61,3 @@ pub fn register() -> CreateCommand {
 pub fn discord_id_wrapper(id: String) -> String {
     format!("<@{}>", id)
 }
-
-//"**Recruited:** Orangefin (STEAM_0:1:238532748)\n**Recruiter:** 𝖲𝖺𝗈𝗂𝗋𝗌𝖾\n**Date Recruited:** 24/02/20\n**In discord:** True\n**Trained:** True"
-//format!("**Recruited:** {recruit_id} ({recruit_steamid})\n**Recruiter:** {recruiter_name}\n**Date Recruited:** {recruited_date}\n**In discord:** {is_trained}\n**Trained:** {is_trained}"),
