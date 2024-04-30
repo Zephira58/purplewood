@@ -9,10 +9,9 @@ use std::{
 
 pub fn env_file_maker() -> std::io::Result<()> {
     let x = fs::read_dir("./data");
-
     match x {
         Ok(_) => {
-            if check_debug() {
+            if check_debug(false) {
                 yellow!("Data directory found, reading data...\n");
                 prnt!("");
             }
@@ -32,10 +31,12 @@ pub fn env_file_maker() -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn check_debug() -> bool {
-    // Load the environment variables from the .env file
-    dotenv::from_path("./data/.env").unwrap();
-    dotenv().ok();
+pub fn check_debug(test: bool) -> bool {
+    if !test {
+        // Load the environment variables from the .env file
+        dotenv::from_path("./data/.env").unwrap();
+        dotenv().ok();
+    }
 
     // Get the DEBUG variable's value
     match env::var("DEBUG") {

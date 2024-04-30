@@ -21,15 +21,15 @@ fn test_check_debug() {
     // Set the DEBUG environment variable to "true"
     std::env::set_var("DEBUG", "true");
     // Test that check_debug returns true when DEBUG is set to "true"
-    assert_eq!(purplewood::check_debug(), true);
+    assert_eq!(purplewood::check_debug(true), true);
 
     // Set the DEBUG environment variable to "false"
     std::env::set_var("DEBUG", "false");
     // Test that check_debug returns false when DEBUG is set to "false"
-    assert_eq!(purplewood::check_debug(), false);
+    assert_eq!(purplewood::check_debug(true), false);
 
     // Remove the DEBUG environment variable
     std::env::remove_var("DEBUG");
     // Test that check_debug returns false when DEBUG is not set
-    assert_eq!(purplewood::check_debug(), false);
+    assert_eq!(purplewood::check_debug(true), false);
 }

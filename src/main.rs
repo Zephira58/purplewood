@@ -42,7 +42,7 @@ impl EventHandler for Handler {
             let yaml = serde_yaml::to_string(&command_info).unwrap();
 
             green_ln!("New command executed:");
-            if check_debug() {
+            if check_debug(false) {
                 println!("Received command interaction: {command:#?}");
             } else {
                 prnt!("{}\n", yaml);
@@ -115,7 +115,7 @@ async fn main() {
     for _x in 0..100 {
         print!("-")
     }
-    if check_debug() {
+    if check_debug(false) {
         yellow!("\nDebug mode enabled!")
     }
     // Configure the client with your Discord bot token in the environment.
