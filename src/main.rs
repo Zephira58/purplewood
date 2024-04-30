@@ -58,6 +58,7 @@ impl EventHandler for Handler {
                 "credits" => Some(commands::credits::run()),
                 "highroll" => Some(commands::highroll::run(0, 0)),
                 "id" => Some(commands::id::run(&command.data.options())),
+                "rules" => Some(commands::rules::run()),
                 _ => Some("not implemented :(".to_string()),
             };
 
@@ -91,6 +92,7 @@ impl EventHandler for Handler {
                     commands::highroll::register(),
                     commands::rockpaper::register(),
                     commands::id::register(),
+                    commands::rules::register(),
                 ],
             )
             .await;

@@ -3,3 +3,4 @@ pub mod highroll;
 pub mod id;
 pub mod recruit;
 pub mod rockpaper;
+pub mod rules;
