@@ -45,7 +45,7 @@ pub async fn run(
         .create_response(
             ctx,
             CreateInteractionResponse::Message(CreateInteractionResponseMessage::new().content(
-                format!("**Recruited:** {} ({recruit_steamid})\n**Recruiter:** {}\n**Date Recruited:** <t:{:?}>\n**Is Trained:** {is_trained}", discord_id_wrapper(recruit_id.to_string()), discord_id_wrapper(recruiter_id.to_string()), unix_time,),
+                format!("**Recruited:** {} ({recruit_steamid})\n**Recruiter:** {}\n**Date Recruited:** <t:{:?}>\n**Is Trained:** {is_trained}", purplewood::discord_id_wrapper(recruit_id.to_string()), purplewood::discord_id_wrapper(recruiter_id.to_string()), unix_time,),
             )),
         )
         .await?;
@@ -55,8 +55,4 @@ pub async fn run(
 pub fn register() -> CreateCommand {
     colour::magenta!(" recruit,");
     CreateCommand::new("recruit").description("Use this to register a new recruit")
-}
-
-pub fn discord_id_wrapper(id: String) -> String {
-    format!("<@{}>", id)
 }
