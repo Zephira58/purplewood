@@ -1,6 +1,6 @@
 [package]
 name = "purplewood"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["zephira <business@zephira.uk>"]
 edition = "2021"
 license = "GNU General Public License v3.0"
