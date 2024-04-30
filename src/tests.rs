@@ -10,9 +10,26 @@ fn highroll() {
 }
 
 #[test]
-fn discord_wrapper() {
-    let id = crate::commands::recruit::discord_id_wrapper("292971545956188160".to_owned());
-    assert_eq!(id, "<@292971545956188160>")
+fn test_discord_id_wrapper() {
+    let id = "123456789".to_string();
+    let result = crate::commands::recruit::discord_id_wrapper(id.clone());
+    assert_eq!(result, format!("<@{}>", id));
 }
 
-//Todo: Figure out how tf to make recruit.rs/id.rs/rockpaper.rs testable
+#[test]
+fn test_check_debug() {
+    // Set the DEBUG environment variable to "true"
+    std::env::set_var("DEBUG", "true");
+    // Test that check_debug returns true when DEBUG is set to "true"
+    assert_eq!(crate::check_debug(), true);
+
+    // Set the DEBUG environment variable to "false"
+    std::env::set_var("DEBUG", "false");
+    // Test that check_debug returns false when DEBUG is set to "false"
+    assert_eq!(crate::check_debug(), false);
+
+    // Remove the DEBUG environment variable
+    std::env::remove_var("DEBUG");
+    // Test that check_debug returns false when DEBUG is not set
+    assert_eq!(crate::check_debug(), false);
+}
