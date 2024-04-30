@@ -9,7 +9,7 @@ pub fn run() -> String {
     5. **Private Issues**: Handle problems privately. Public complaints make everyone look bad. If serious, contact a commanding officer.
     6. **Leniency**: We're often lenient, but don't abuse it. No bickering or tantrums.
     ";
-    format!("{}", rules)
+    rules.to_owned()
 }
 
 pub fn register() -> CreateCommand {
