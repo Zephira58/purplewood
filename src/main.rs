@@ -2,23 +2,24 @@ mod commands;
 pub mod tests;
 
 use colour::*;
-use serde_yaml::Value;
-use std::{
-    collections::BTreeMap,
-    fs::{self, File},
-    io::Write,
-    time::{SystemTime, UNIX_EPOCH},
-    env, process,
-};
 use dotenv::dotenv;
+use serde_yaml::Value;
 use serenity::{
-    async_trait, builder::{CreateInteractionResponse, CreateInteractionResponseMessage},
+    async_trait,
+    builder::{CreateInteractionResponse, CreateInteractionResponseMessage},
     model::{application::Interaction, gateway::Ready, id::GuildId},
     prelude::*,
 };
+use std::{
+    collections::BTreeMap,
+    env,
+    fs::{self, File},
+    io::Write,
+    process,
+    time::{SystemTime, UNIX_EPOCH},
+};
 
 struct Handler;
-
 
 #[async_trait]
 impl EventHandler for Handler {
@@ -48,7 +49,7 @@ impl EventHandler for Handler {
             } else {
                 prnt!("{}\n", yaml);
             }
-            
+
             let recruiterid = &command.member.clone().unwrap().user.id.to_string();
             let x = recruiterid.parse::<i64>().unwrap();
             let content = match command.data.name.as_str() {
@@ -175,7 +176,7 @@ fn check_debug() -> bool {
             } else {
                 false
             }
-        },
+        }
         Err(_) => {
             // If the DEBUG variable does not exist, return false
             false

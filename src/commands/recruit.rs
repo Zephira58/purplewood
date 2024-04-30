@@ -1,11 +1,5 @@
-use serenity::{
-    builder::*,
-    model::prelude::*,
-    prelude::*,
-    utils::CreateQuickModal,
-};
+use serenity::{builder::*, model::prelude::*, prelude::*, utils::CreateQuickModal};
 use std::time::{SystemTime, UNIX_EPOCH};
-
 
 pub async fn run(
     ctx: &Context,
