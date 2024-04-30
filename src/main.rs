@@ -171,11 +171,7 @@ fn check_debug() -> bool {
     match env::var("DEBUG") {
         Ok(val) => {
             // Check if the value is "true"
-            if val.to_lowercase() == "true" {
-                true
-            } else {
-                false
-            }
+            val.to_lowercase() == "true"
         }
         Err(_) => {
             // If the DEBUG variable does not exist, return false
