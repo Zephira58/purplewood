@@ -10,7 +10,7 @@ description = "A discord bot built with the serentiy framework on rust. To be us
 publish = false
 
 [dependencies]
-serenity = { version = "0.12.1", default-features = false, features = ["client", "gateway", "rustls_backend", "model", "collector"] }
+serenity = { version = "0.12.2", default-features = false, features = ["client", "gateway", "rustls_backend", "model", "collector"] }
 tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
 dotenv = "0.15.0"
 rand = "0.8.5"
