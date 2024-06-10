@@ -15,5 +15,5 @@ tokio = { version = "1.37.0", features = ["macros", "rt-multi-thread"] }
 dotenv = "0.15.0"
 rand = "0.8.5"
 self_update = "0.40.0"
-colour = "1.1.0"
+colour = "2.1.0"
 serde_yaml = "0.9.34"
